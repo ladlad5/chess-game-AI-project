@@ -252,45 +252,76 @@ class AI:
 
     def calculateb(self,gametiles):
         value=0
+        moveValues = 0
+        centerProximity = 0
+        moves = []
         for x in range(8):
             for y in range(8):
+                    if gametiles[y][x].pieceonTile.tostring() != '-':
+                        moves=gametiles[y][x].pieceonTile.legalmoveb(gametiles)
+                    else:
+                        moves = []
+                    if moves is None:
+                        moves = []
                     if gametiles[y][x].pieceonTile.tostring()=='P':
                         value=value-100
+                        moveValues -= len(moves)*2
+                        #centerProximity = centerProximity + (abs(x - 4) + abs(y-4))*1
 
                     if gametiles[y][x].pieceonTile.tostring()=='N':
                         value=value-350
+                        moveValues -= len(moves)*2
+                        centerProximity = centerProximity + (abs(x - 4) + abs(y-4))*3
 
                     if gametiles[y][x].pieceonTile.tostring()=='B':
                         value=value-350
+                        moveValues -= len(moves)*2
+                        centerProximity = centerProximity + (abs(x - 4) + abs(y-4))*2
 
                     if gametiles[y][x].pieceonTile.tostring()=='R':
                         value=value-525
+                        moveValues -= len(moves)*2
+                        centerProximity = centerProximity + (abs(x - 4) + abs(y-4))*4
 
                     if gametiles[y][x].pieceonTile.tostring()=='Q':
-                        value=value-1000
+                        value=value-10000
+                        moveValues -= len(moves)*2
+                        centerProximity = centerProximity + (abs(x - 4) + abs(y-4))*2
 
                     if gametiles[y][x].pieceonTile.tostring()=='K':
-                        value=value-10000
+                        value=value-100000
+                        moveValues -= len(moves)*2
 
                     if gametiles[y][x].pieceonTile.tostring()=='p':
                         value=value+100
+                        moveValues += len(moves)
+                        #centerProximity = centerProximity - (abs(x - 4) + abs(y-4))*1
 
                     if gametiles[y][x].pieceonTile.tostring()=='n':
                         value=value+350
+                        moveValues += len(moves)
+                        centerProximity = centerProximity - (abs(x - 4) + abs(y-4))*3
 
                     if gametiles[y][x].pieceonTile.tostring()=='b':
                         value=value+350
+                        moveValues += len(moves)
+                        centerProximity = centerProximity - (abs(x - 4) + abs(y-4))*2
 
                     if gametiles[y][x].pieceonTile.tostring()=='r':
                         value=value+525
+                        moveValues += len(moves)
+                        centerProximity = centerProximity - (abs(x - 4) + abs(y-4))*4
 
                     if gametiles[y][x].pieceonTile.tostring()=='q':
                         value=value+1000
+                        moveValues += len(moves)
+                        centerProximity = centerProximity - (abs(x - 4) + abs(y-4))*2
 
                     if gametiles[y][x].pieceonTile.tostring()=='k':
                         value=value+10000
+                        moveValues += len(moves)
 
-        return value
+        return value + moveValues - centerProximity
 
 
     def move(self,gametiles,y,x,n,m):
